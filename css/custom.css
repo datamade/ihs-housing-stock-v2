@@ -1,0 +1,63 @@
+body {
+  font: 18px/1.3em "ColaborateThinRegular", sans-serif;
+}
+
+#map {
+  display: block;
+  height: 1000px;
+}
+
+h1 {
+  font: 32px/1em "GibsonBold", serif;
+}
+
+h2 {
+  font: 22px/1em "GibsonBold", serif;
+}
+
+h1,
+h2 {
+  text-transform: uppercase;
+  color: #827e7e;
+}
+
+#logo {
+  max-height: 60px;
+  width: auto;
+}
+
+/* Fonts */
+@font-face {
+  font-family: "GibsonSemiBold";
+  src: url("/css/fonts/gibson-semibold-webfont.eot");
+  src: url("/css/fonts/gibson-semibold-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("/css/fonts/gibson-semibold-webfont.woff") format("woff"),
+    url("/css/fonts/gibson-semibold-webfont.ttf") format("truetype"),
+    url("/css/fonts/gibson-semibold-webfont.svg#GibsonSemiBold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GibsonBold";
+  src: url("/css/fonts/gibson-bold-webfont.eot");
+  src: url("/css/fonts/gibson-bold-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("/css/fonts/gibson-bold-webfont.woff") format("woff"),
+    url("/css/fonts/gibson-bold-webfont.ttf") format("truetype"),
+    url("/css/fonts/gibson-bold-webfont.svg#GibsonBold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ColaborateThinRegular";
+  src: url("/css/fonts/ColabThi-webfont.eot");
+  src: url("/css/fonts/ColabThi-webfont.eot?#iefix") format("embedded-opentype"),
+    url("/css/fonts/ColabThi-webfont.woff") format("woff"),
+    url("/css/fonts/ColabThi-webfont.ttf") format("truetype"),
+    url("/css/fonts/ColabThi-webfont.svg#ColaborateThinRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}

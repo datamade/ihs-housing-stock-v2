@@ -18,11 +18,14 @@
     <!-- Bootstrap css -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" />
     <link rel="stylesheet" href="css/custom.css"/>
 
     <!-- External scripts -->
-    <script src="lib/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js'></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,10 +37,19 @@
 
   </head>
   <body>
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <h1>IHS Housing Stock Map</h1>
+            <a class="navbar-brand" href="http://www.housingstudies.org/">
+                <img src="images/ihs-logo.png" id="logo" alt="Institue for Housing Studies at DePaul University">
+            </a>
+        </div>
+
+    </nav>
     <main role="main" class="container-fluid">
-
-        <script type="text/javascript" src="js/map.js"></script>
-
+        <div id="map"></div>
     </main>
+
+    <script type="text/javascript" src="js/map.js"></script>
   </body>
 </html>
