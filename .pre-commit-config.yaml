@@ -4,7 +4,9 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
+        exclude: ^(lib/)
       - id: trailing-whitespace
+        exclude: ^(lib/)
 
   - repo: https://github.com/psf/black
     rev: 22.3.0
@@ -38,5 +40,4 @@ repos:
     rev: v2.5.1
     hooks:
       - id: prettier
-        exclude: ^({{ cookiecutter.module_name }}/static/js/lib/|{{ cookiecutter.module_name }}/static/css/bootstrap|{{ cookiecutter.module_name }}/templates/)
         files: \.(js|ts|jsx|tsx|css|scss|less|json|markdown|md|yaml|yml)$
