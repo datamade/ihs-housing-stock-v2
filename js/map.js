@@ -6,8 +6,7 @@ const map = new mapbox.Map({
   container: "map",
   style: "mapbox://styles/housingstudies/cmcb0c6ql002001rz02zqewvm",
   center: [-87.66231, 41.85754], // [lng, lat]
-  zoom: 12, // parcels will not be visible below 12
-  minZoom: 12,
+  zoom: 12,
 })
 
 // Zoom and rotation controls
