@@ -42,7 +42,7 @@ map.on("load", () => {
           ["boolean", ["feature-state", "hover"], false],
           ["boolean", ["feature-state", "selected"], false],
         ],
-        0.5,
+        0.3,
         0,
       ],
     },
