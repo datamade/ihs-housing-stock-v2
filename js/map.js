@@ -53,22 +53,24 @@ map.on("load", () => {
     },
   })
 
-  let mapFeatSources = {
+  let mapSources = {
     source: "ihs_rollup_source",
     sourceLayer: "ihs_rollup-2jzfoj",
-    id: hoveredFeatId,
   }
 
   // Update the feature state for the feature under the mouse, when hovering.
   map.on("mousemove", "ihs-fills", (e) => {
     if (e.features.length > 0) {
       if (hoveredFeatId !== null) {
-        map.setFeatureState({ ...mapFeatSources }, { hover: false })
+        map.setFeatureState(
+          { ...mapSources, id: hoveredFeatId },
+          { hover: false }
+        )
       }
 
       const hoveredFeat = e.features[0]
       hoveredFeatId = hoveredFeat.id
-      map.setFeatureState({ ...mapFeatSources }, { hover: true })
+      map.setFeatureState({ ...mapSources, id: hoveredFeatId }, { hover: true })
 
       nameDisplay.innerText = hoveredFeat.properties.name
       unitsDisplay.innerText = parseInt(
@@ -82,7 +84,10 @@ map.on("load", () => {
   // Set previous feature's hover state back to false when leaving
   map.on("mouseleave", "ihs-fills", () => {
     if (hoveredFeatId !== null) {
-      map.setFeatureState({ ...mapFeatSources }, { hover: false })
+      map.setFeatureState(
+        { ...mapSources, id: hoveredFeatId },
+        { hover: false }
+      )
     }
     hoveredFeatId = null
     nameDisplay.innerText = ""
