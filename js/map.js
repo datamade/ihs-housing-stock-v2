@@ -16,6 +16,7 @@ map.addControl(new mapbox.NavigationControl(), "top-left")
 map.scrollZoom.disable()
 
 let hoveredFeatId = null
+let clickedFeatId = null
 map.on("load", () => {
   // Set a specific ID field so all feature ids are unique beyond their tile
   map.addSource("ihs_rollup_source", {
@@ -34,14 +35,17 @@ map.on("load", () => {
       "fill-color": "#749C75",
       "fill-opacity": [
         "case",
-        ["boolean", ["feature-state", "hover"], false],
+        [
+          "any",
+          ["boolean", ["feature-state", "hover"], false],
+          ["boolean", ["feature-state", "selected"], false],
+        ],
         0.5,
         0,
       ],
     },
   })
 
-  // TODO: Change feature line-color depending on clicked state
   map.addLayer({
     id: "ihs-borders",
     type: "line",
@@ -49,7 +53,12 @@ map.on("load", () => {
     "source-layer": "ihs_rollup-2jzfoj",
     paint: {
       "line-color": "#000000",
-      "line-width": 2,
+      "line-width": [
+        "case",
+        ["boolean", ["feature-state", "selected"], false],
+        5,
+        1,
+      ],
     },
   })
 
@@ -96,6 +105,7 @@ map.on("load", () => {
     map.getCanvas().style.cursor = ""
   })
 
+  // Show popup and highlight feature when clicking
   map.on("click", "ihs-fills", (e) => {
     const clickedFeat = e.features[0]
     const props = clickedFeat.properties
@@ -145,6 +155,19 @@ map.on("load", () => {
         </table>
       </div>
     `
+
+    if (clickedFeatId !== null) {
+      map.setFeatureState(
+        { ...mapSources, id: clickedFeatId },
+        { selected: false }
+      )
+    }
+
+    clickedFeatId = clickedFeat.id
+    map.setFeatureState(
+      { ...mapSources, id: clickedFeatId },
+      { selected: true }
+    )
 
     // Add popup at cursor position when feature is clicked
     new mapbox.Popup().setLngLat(e.lngLat).setHTML(description).addTo(map)
