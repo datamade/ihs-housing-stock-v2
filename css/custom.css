@@ -4,7 +4,7 @@ body {
 
 #map {
   display: block;
-  height: 1000px;
+  height: 85vh;
 }
 
 h1 {
@@ -24,6 +24,39 @@ h2 {
 #logo {
   max-height: 60px;
   width: auto;
+}
+
+#area-info {
+  position: absolute !important;
+  font-family: sans-serif;
+  margin-top: 75vh;
+  margin-left: 10px;
+  padding: 5px;
+  width: 30%;
+  border: 1px solid black;
+  color: #222;
+  background-color: #fff;
+  border-radius: 3px;
+  z-index: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.mapboxgl-popup-content {
+  min-width: 300px;
+}
+
+hr {
+  margin: 0.5rem 0;
+}
+
+/* Media queries */
+@media screen and (max-width: 767px) {
+  #map {
+    height: 80vh;
+  }
+  #area-info {
+    margin-top: 70vh;
+  }
 }
 
 /* Fonts */
