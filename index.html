@@ -44,9 +44,14 @@
 
     </nav>
     <main role="main" class="container-fluid">
-        <div id="area-info">
-            <div><span class="me-2">Name:</span><strong id="name"></strong></div>
-            <div><span class="me-2">Total Units:</span><strong id="units"></strong></div>
+        <div id="area-info" class="ps-2">
+            <p class="mb-0" id="placeholder">
+                <i class="fa fa-hand-pointer-o" aria-hidden="true"></i> Hover or select an area for details.
+            </p>
+            <div id="info-display" style="display: none;">
+                <div><span class="me-2">Name:</span><strong id="name"></strong></div>
+                <div><span class="me-2">Total Units:</span><strong id="units"></strong></div>
+            </div>
         </div>
         <div id="map"></div>
     </main>

@@ -1,4 +1,6 @@
 const mapbox = mapboxgl // eslint-disable-line
+const infoPlaceholder = document.getElementById("placeholder")
+const infoDisplay = document.getElementById("info-display")
 const nameDisplay = document.getElementById("name")
 const unitsDisplay = document.getElementById("units")
 
@@ -81,10 +83,10 @@ map.on("load", () => {
       hoveredFeatId = hoveredFeat.id
       map.setFeatureState({ ...mapSources, id: hoveredFeatId }, { hover: true })
 
+      infoDisplay.style.display = "block"
+      infoPlaceholder.style.display = "none"
       nameDisplay.innerText = hoveredFeat.properties.name
-      unitsDisplay.innerText = parseInt(
-        hoveredFeat.properties.Total
-      ).toLocaleString("en")
+      unitsDisplay.innerText = formatUnits(hoveredFeat.properties.Total)
 
       map.getCanvas().style.cursor = "pointer"
     }
@@ -99,6 +101,9 @@ map.on("load", () => {
       )
     }
     hoveredFeatId = null
+
+    infoDisplay.style.display = "none"
+    infoPlaceholder.style.display = "block"
     nameDisplay.innerText = ""
     unitsDisplay.innerText = ""
 
