@@ -4,6 +4,12 @@ const infoDisplay = document.getElementById("info-display")
 const nameDisplay = document.getElementById("name")
 const unitsDisplay = document.getElementById("units")
 
+const singleLegendEl = document.getElementById("legend-single-pcnt")
+const condoLegendEl = document.getElementById("legend-condo-pcnt")
+const unitsTwoLegendEl = document.getElementById("legend-two-units-pcnt")
+const unitsFiveLegendEl = document.getElementById("legend-five-units-pcnt")
+const unitsFiftyLegendEl = document.getElementById("legend-fifty-units-pcnt")
+
 mapbox.accessToken =
   "pk.eyJ1IjoiaG91c2luZ3N0dWRpZXMiLCJhIjoiY21jbmZ4MWFjMDZ1cjJrcHBhNHY2aTkwbiJ9.t-q8Z7FV6gdGhztkwKTeAA"
 const map = new mapbox.Map({
@@ -80,13 +86,20 @@ map.on("load", () => {
       }
 
       const hoveredFeat = e.features[0]
+      const props = hoveredFeat.properties
       hoveredFeatId = hoveredFeat.id
       map.setFeatureState({ ...mapSources, id: hoveredFeatId }, { hover: true })
 
       infoDisplay.style.display = "block"
       infoPlaceholder.style.display = "none"
-      nameDisplay.innerText = hoveredFeat.properties.name
-      unitsDisplay.innerText = formatUnits(hoveredFeat.properties.Total)
+      nameDisplay.innerText = props.name
+      unitsDisplay.innerText = formatUnits(props.Total)
+
+      singleLegendEl.innerHTML = formatLegendPcnt(props["SFH_p"])
+      condoLegendEl.innerHTML = formatLegendPcnt(props["Condo_p"])
+      unitsTwoLegendEl.innerHTML = formatLegendPcnt(props["2to4_p"])
+      unitsFiveLegendEl.innerHTML = formatLegendPcnt(props["U5to49_p"])
+      unitsFiftyLegendEl.innerHTML = formatLegendPcnt(props["U50_p"])
 
       map.getCanvas().style.cursor = "pointer"
     }
@@ -103,9 +116,20 @@ map.on("load", () => {
     hoveredFeatId = null
 
     infoDisplay.style.display = "none"
-    infoPlaceholder.style.display = "block"
-    nameDisplay.innerText = ""
-    unitsDisplay.innerText = ""
+    infoPlaceholder.style.display = "flex"
+
+    const elementsToEmpty = [
+      nameDisplay,
+      unitsDisplay,
+      singleLegendEl,
+      condoLegendEl,
+      unitsTwoLegendEl,
+      unitsFiveLegendEl,
+      unitsFiftyLegendEl,
+    ]
+    elementsToEmpty.forEach((el) => {
+      el.innerText = ""
+    })
 
     map.getCanvas().style.cursor = ""
   })
@@ -132,27 +156,27 @@ map.on("load", () => {
           </thead>
           <tbody>
             <tr>
-              <td>Single Family</td>
+              <td><i class="fa fa-square legend-single" aria-hidden="true"></i> Single Family</td>
               <td>${formatUnits(props["SFH"])}</td>
               <td>${props["SFH_p"]}</td>
             </tr>
             <tr>
-              <td>Condo</td>
+              <td><i class="fa fa-square legend-condo" aria-hidden="true"></i> Condo</td>
               <td>${formatUnits(props["Condo"])}</td>
               <td>${props["Condo_p"]}</td>
             </tr>
             <tr>
-              <td>2 - 4 Units</td>
+              <td><i class="fa fa-square legend-two" aria-hidden="true"></i> 2 - 4 Units</td>
               <td>${formatUnits(props["2to4"])}</td>
               <td>${props["2to4_p"]}</td>
             </tr>
             <tr>
-              <td>5 - 49 Units</td>
+              <td><i class="fa fa-square legend-five" aria-hidden="true"></i> 5 - 49 Units</td>
               <td>${formatUnits(props["U5to49"])}</td>
               <td>${props["U5to49_p"]}</td>
             </tr>
             <tr>
-              <td>50+ Units</td>
+              <td><i class="fa fa-square legend-fifty" aria-hidden="true"></i> 50+ Units</td>
               <td>${formatUnits(props["U50"])}</td>
               <td>${props["U50_p"]}</td>
             </tr>
@@ -179,6 +203,12 @@ map.on("load", () => {
   })
 })
 
+/** Helper Functions */
+
 function formatUnits(value) {
   return value ? parseInt(value).toLocaleString("en") : "0"
+}
+
+function formatLegendPcnt(value) {
+  return `| <strong>${value}</strong>`
 }

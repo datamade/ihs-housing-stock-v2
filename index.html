@@ -46,11 +46,39 @@
     <main role="main" class="container-fluid">
         <div id="area-info" class="ps-2">
             <p class="mb-0" id="placeholder">
-                <i class="fa fa-hand-pointer-o" aria-hidden="true"></i> Hover or select an area for details.
+                <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Hover or select an area for details.
             </p>
             <div id="info-display" style="display: none;">
                 <div><span class="me-2">Name:</span><strong id="name"></strong></div>
                 <div><span class="me-2">Total Units:</span><strong id="units"></strong></div>
+            </div>
+            <div id="legend-display">
+                <hr aria-hidden="true">
+
+                <table class="table table-borderless table-sm mb-0">
+                    <tbody>
+                        <tr>
+                            <td><i class="fa fa-square legend-single" aria-hidden="true"></i> Single Family</td>
+                            <td id="legend-single-pcnt"></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-square legend-condo" aria-hidden="true"></i> Condo</td>
+                            <td id="legend-condo-pcnt"></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-square legend-two" aria-hidden="true"></i> 2 - 4 Units</td>
+                            <td id="legend-two-units-pcnt"></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-square legend-five" aria-hidden="true"></i> 5 - 49 Units</td>
+                            <td id="legend-five-units-pcnt"></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-square legend-fifty" aria-hidden="true"></i> 50+ Units</td>
+                            <td id="legend-fifty-units-pcnt"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div id="map"></div>

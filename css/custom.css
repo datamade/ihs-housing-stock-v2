@@ -29,10 +29,12 @@ h2 {
 #area-info {
   position: absolute !important;
   font-family: sans-serif;
-  margin-top: 75vh;
+  margin-top: 60vh;
   margin-left: 10px;
   padding: 5px;
   width: 30%;
+  min-width: 300px;
+  max-width: 400px;
   border: 1px solid black;
   color: #222;
   background-color: #fff;
@@ -41,12 +43,48 @@ h2 {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+#placeholder {
+  display: flex;
+  align-items: center;
+}
+
+#placeholder,
+#info-display {
+  min-height: 47px;
+}
+
 .mapboxgl-popup-content {
   min-width: 300px;
+  font-size: 14px;
 }
 
 hr {
   margin: 0.5rem 0;
+}
+
+#legend-display tr td:first-of-type {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.legend-single {
+  color: rgb(244, 206, 153);
+}
+
+.legend-condo {
+  color: rgb(235, 161, 71);
+}
+
+.legend-two {
+  color: rgb(132, 158, 200);
+}
+
+.legend-five {
+  color: rgb(49, 75, 119);
+}
+
+.legend-fifty {
+  color: rgb(29, 41, 62);
 }
 
 /* Media queries */
@@ -55,7 +93,7 @@ hr {
     height: 80vh;
   }
   #area-info {
-    margin-top: 70vh;
+    margin-top: 55vh;
   }
 }
 
