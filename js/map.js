@@ -1,14 +1,5 @@
 const mapbox = mapboxgl // eslint-disable-line
-const infoPlaceholder = document.getElementById("placeholder")
-const infoDisplay = document.getElementById("info-display")
 const nameDisplay = document.getElementById("name")
-const unitsDisplay = document.getElementById("units")
-
-const singleLegendEl = document.getElementById("legend-single-pcnt")
-const condoLegendEl = document.getElementById("legend-condo-pcnt")
-const unitsTwoLegendEl = document.getElementById("legend-two-units-pcnt")
-const unitsFiveLegendEl = document.getElementById("legend-five-units-pcnt")
-const unitsFiftyLegendEl = document.getElementById("legend-fifty-units-pcnt")
 
 mapbox.accessToken =
   "pk.eyJ1IjoiaG91c2luZ3N0dWRpZXMiLCJhIjoiY21jbmZ4MWFjMDZ1cjJrcHBhNHY2aTkwbiJ9.t-q8Z7FV6gdGhztkwKTeAA"
@@ -90,16 +81,7 @@ map.on("load", () => {
       hoveredFeatId = hoveredFeat.id
       map.setFeatureState({ ...mapSources, id: hoveredFeatId }, { hover: true })
 
-      infoDisplay.style.display = "block"
-      infoPlaceholder.style.display = "none"
       nameDisplay.innerText = props.name
-      unitsDisplay.innerText = formatUnits(props.Total)
-
-      singleLegendEl.innerHTML = formatLegendPcnt(props["SFH_p"])
-      condoLegendEl.innerHTML = formatLegendPcnt(props["Condo_p"])
-      unitsTwoLegendEl.innerHTML = formatLegendPcnt(props["2to4_p"])
-      unitsFiveLegendEl.innerHTML = formatLegendPcnt(props["U5to49_p"])
-      unitsFiftyLegendEl.innerHTML = formatLegendPcnt(props["U50_p"])
 
       map.getCanvas().style.cursor = "pointer"
     }
@@ -115,21 +97,7 @@ map.on("load", () => {
     }
     hoveredFeatId = null
 
-    infoDisplay.style.display = "none"
-    infoPlaceholder.style.display = "flex"
-
-    const elementsToEmpty = [
-      nameDisplay,
-      unitsDisplay,
-      singleLegendEl,
-      condoLegendEl,
-      unitsTwoLegendEl,
-      unitsFiveLegendEl,
-      unitsFiftyLegendEl,
-    ]
-    elementsToEmpty.forEach((el) => {
-      el.innerText = ""
-    })
+    nameDisplay.innerText = ""
 
     map.getCanvas().style.cursor = ""
   })
@@ -150,7 +118,7 @@ map.on("load", () => {
           <thead>
             <tr>
               <th scope="col">Housing Type</th>
-              <th scope="col">Value</th>
+              <th scope="col">Housing Units</th>
               <th scope="col">Percentage</th>
             </tr>
           </thead>
@@ -207,8 +175,4 @@ map.on("load", () => {
 
 function formatUnits(value) {
   return value ? parseInt(value).toLocaleString("en") : "0"
-}
-
-function formatLegendPcnt(value) {
-  return `| <strong>${value}</strong>`
 }

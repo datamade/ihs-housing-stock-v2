@@ -29,7 +29,7 @@ h2 {
 #area-info {
   position: absolute !important;
   font-family: sans-serif;
-  margin-top: 60vh;
+  margin-top: 70vh;
   margin-left: 10px;
   padding: 5px;
   width: 30%;
@@ -43,16 +43,6 @@ h2 {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#placeholder {
-  display: flex;
-  align-items: center;
-}
-
-#placeholder,
-#info-display {
-  min-height: 47px;
-}
-
 .mapboxgl-popup-content {
   min-width: 350px;
   font-size: 14px;
@@ -60,11 +50,6 @@ h2 {
 
 hr {
   margin: 0.5rem 0;
-}
-
-#legend-display tr td:first-of-type {
-  white-space: nowrap;
-  width: 1%;
 }
 
 .legend-single {
@@ -93,7 +78,7 @@ hr {
     height: 80vh;
   }
   #area-info {
-    margin-top: 55vh;
+    margin-top: 65vh;
   }
 }
 
