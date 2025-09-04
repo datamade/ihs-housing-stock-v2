@@ -32,9 +32,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-    <!-- Custom JavaScript -->
-        <!-- TODO: details -->
-
   </head>
   <body>
     <nav class="navbar navbar-light">
@@ -47,6 +44,14 @@
 
     </nav>
     <main role="main" class="container-fluid">
+        <div id="area-info" class="ps-2">
+            <p class="mb-1" id="instructions">
+                <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area for details.
+            </p>
+            <div id="info-display">
+                <div><span class="me-2">Name:</span><strong id="name"></strong></div>
+            </div>
+        </div>
         <div id="map"></div>
     </main>
 
