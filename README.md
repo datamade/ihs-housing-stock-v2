@@ -4,8 +4,6 @@ Version 2 of the template for DePaul Institute for Housing Studies MapBox maps.
 
 ## Development
 
-TODO: details
-
 ### Setup
 
 #### Pre-commit
@@ -34,7 +32,7 @@ Since hooks are run locally, you can modify which scripts are run before each co
 
 #### Running the app
 
-TODO: details
+To start this app locally, run `python3 -m http.server` from the root directory.
 
 #### Managing site styles
 

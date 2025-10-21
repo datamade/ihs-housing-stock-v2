@@ -8,11 +8,35 @@ const map = new mapbox.Map({
   style: "mapbox://styles/housingstudies/cmcb0c6ql002001rz02zqewvm",
   center: [-87.66231, 41.85754], // [lng, lat]
   zoom: 12,
+  attributionControl: false,
 })
 
 // Zoom and rotation controls
 map.addControl(new mapbox.NavigationControl(), "top-left")
 map.scrollZoom.disable()
+
+// Attribution
+const attributionStr = "IHS Calculations of Data from the Cook County Assessor"
+let currAttribution = new mapbox.AttributionControl({
+  customAttribution: attributionStr,
+  compact: window.innerWidth < 768,
+})
+map.addControl(currAttribution)
+
+window.onresize = () => {
+  // Make attribution compact on smaller window sizes
+  const isCompactWindow = window.innerWidth < 768
+
+  // Only change compact setting when needed
+  if (isCompactWindow != currAttribution.options.compact) {
+    map.removeControl(currAttribution)
+    currAttribution = new mapbox.AttributionControl({
+      customAttribution: attributionStr,
+      compact: isCompactWindow,
+    })
+    map.addControl(currAttribution)
+  }
+}
 
 let hoveredFeatId = null
 let clickedFeatId = null
@@ -111,7 +135,6 @@ map.on("load", () => {
         <p class="h4">${props.name}</p>
         <ul class="list-unstyled mb-0">
           <li>Total Units: ${parseInt(props["Total"]).toLocaleString("en")}</li>
-          <li>Percent Multifamily: ${props["UmultiFam"]}</li>
         </ul>
         <hr aria-hidden="true">
         <table class="table table-striped">
