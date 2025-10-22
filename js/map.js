@@ -177,26 +177,27 @@ map.on("load", () => {
       </div>
     `
 
-    if (clickedFeatId !== null) {
-      map.setFeatureState(
-        { ...mapSources, id: clickedFeatId },
-        { selected: false }
-      )
-    }
-
     clickedFeatId = clickedFeat.id
-    map.setFeatureState(
-      { ...mapSources, id: clickedFeatId },
-      { selected: true }
-    )
+    setSelectedAttr(clickedFeatId, true)
 
     // Add popup at cursor position when feature is clicked
-    new mapbox.Popup().setLngLat(e.lngLat).setHTML(description).addTo(map)
+    const popup = new mapbox.Popup().setLngLat(e.lngLat).setHTML(description)
+    popup.on("close", () => {
+      setSelectedAttr(clickedFeatId, false)
+    })
+    popup.addTo(map)
   })
+
+  /** Helper Functions */
+
+  function formatUnits(value) {
+    return value ? parseInt(value).toLocaleString("en") : "0"
+  }
+
+  function setSelectedAttr(featId, selectedVal) {
+    map.setFeatureState(
+      { ...mapSources, id: featId },
+      { selected: selectedVal }
+    )
+  }
 })
-
-/** Helper Functions */
-
-function formatUnits(value) {
-  return value ? parseInt(value).toLocaleString("en") : "0"
-}
