@@ -44,7 +44,7 @@ map.on("load", () => {
   // Set a specific ID field so all feature ids are unique beyond their tile
   map.addSource("ihs_rollup_source", {
     type: "vector",
-    url: "mapbox://housingstudies.98grrlnk",
+    url: "mapbox://housingstudies.bjoslluh",
     promoteId: "name",
   })
 
@@ -53,7 +53,7 @@ map.on("load", () => {
     id: "ihs-fills",
     type: "fill",
     source: "ihs_rollup_source",
-    "source-layer": "ihs_rollup-2jzfoj",
+    "source-layer": "ihs_rollup_categorized-bu6v14",
     paint: {
       "fill-color": "#749C75",
       "fill-opacity": [
@@ -73,7 +73,7 @@ map.on("load", () => {
     id: "ihs-borders",
     type: "line",
     source: "ihs_rollup_source",
-    "source-layer": "ihs_rollup-2jzfoj",
+    "source-layer": "ihs_rollup_categorized-bu6v14",
     paint: {
       "line-color": "#000000",
       "line-width": [
@@ -87,7 +87,7 @@ map.on("load", () => {
 
   let mapSources = {
     source: "ihs_rollup_source",
-    sourceLayer: "ihs_rollup-2jzfoj",
+    sourceLayer: "ihs_rollup_categorized-bu6v14",
   }
 
   // Update the feature state for the feature under the mouse, when hovering.
