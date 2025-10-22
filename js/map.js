@@ -132,10 +132,11 @@ map.on("load", () => {
     const props = clickedFeat.properties
     const description = `
       <div class="m-2">
-        <p class="h4">${props.name}</p>
-        <ul class="list-unstyled mb-0">
-          <li>Total Units: ${parseInt(props["Total"]).toLocaleString("en")}</li>
-        </ul>
+        <p class="h4 mb-0">${props.name}</p>
+        <p class="text-secondary mb-2">${props.category}</p>
+        <p class="mb-0">
+          Total Units: ${parseInt(props["Total"]).toLocaleString("en")}
+        </p>
         <hr aria-hidden="true">
         <table class="table table-striped">
           <thead>
