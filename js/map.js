@@ -186,8 +186,14 @@ map.on("load", () => {
     let inputVal = e.detail.value
     for (const area of allAreas) {
       if (area.id == inputVal) {
-        const polygon = turfObj.polygon(area.geometry.coordinates)
-        const center = turfObj.centroid(polygon).geometry.coordinates
+        let shape = null
+        const coords = area.geometry.coordinates
+        if (area.geometry.type == "Polygon") {
+          shape = turfObj.polygon(coords)
+        } else {
+          shape = turfObj.multiPolygon(coords)
+        }
+        const center = turfObj.centroid(shape).geometry.coordinates
         if (popup) popup.remove()
 
         map.easeTo({ center: center, duration: 1500 })
