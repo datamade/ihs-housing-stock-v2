@@ -3,6 +3,9 @@ const turfObj = turf // eslint-disable-line
 const choicesObj = Choices // eslint-disable-line
 const nameDisplay = document.getElementById("name")
 const searchInput = document.getElementById("search")
+const searchChoicesEl = new choicesObj(searchInput, {
+  searchResultLimit: -1,
+})
 
 mapbox.accessToken =
   "pk.eyJ1IjoiaG91c2luZ3N0dWRpZXMiLCJhIjoiY21jbmZ4MWFjMDZ1cjJrcHBhNHY2aTkwbiJ9.t-q8Z7FV6gdGhztkwKTeAA"
@@ -92,7 +95,7 @@ map.on("load", () => {
       },
     })
     .once("idle", () => {
-      // Once resources are loaded, set up the searchable select input
+      // Once resources are loaded, set options for the searchable select input
       const allAreasRaw = map.querySourceFeatures("ihs_rollup_source", {
         sourceLayer: "ihs_rollup_categorized-bu6v14",
       })
@@ -125,10 +128,8 @@ map.on("load", () => {
       // so we need to zoom back to our intended default once those are gotten
       map.easeTo({ zoom: 12, duration: 1500 })
 
-      // Create searchable dropdown
-      new choicesObj(searchInput, {
-        choices: areaOptions,
-      })
+      // Set searchable dropdown options
+      searchChoicesEl.setChoices(areaOptions)
     })
 
   let mapSources = {
@@ -179,6 +180,7 @@ map.on("load", () => {
     const description = getDescription(props)
     clickedFeatId = clickedFeat.id
     setSelectedAttr(clickedFeatId, true)
+    searchChoicesEl.removeActiveItems()
 
     // Add popup at cursor position when feature is clicked
     popup = new mapbox.Popup().setLngLat(e.lngLat).setHTML(description)
@@ -196,12 +198,12 @@ map.on("load", () => {
         const polygon = turfObj.polygon(area.geometry.coordinates)
         const center = turfObj.centroid(polygon).geometry.coordinates
         const description = getDescription(area.properties)
-
-        map.easeTo({ center: center, duration: 1500 })
-        setSelectedAttr(area.id, true)
         if (popup) {
           popup.remove()
         }
+
+        map.easeTo({ center: center, duration: 1500 })
+        setSelectedAttr(area.id, true)
         popup = new mapbox.Popup().setLngLat(center).setHTML(description)
         popup.on("close", () => {
           setSelectedAttr(area.id, false)

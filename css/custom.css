@@ -29,9 +29,6 @@ h2 {
 #area-info {
   font-family: sans-serif;
   padding: 5px;
-  width: 30%;
-  min-width: 300px;
-  max-width: 400px;
   border: 1px solid black;
   color: #222;
   background-color: #fff;
@@ -111,6 +108,19 @@ hr {
 }
 
 /* Choices.js style overrides */
+.choices {
+  margin: 1rem 0 !important;
+}
+
 .choices__list {
   z-index: 3 !important;
+}
+
+.choices__inner {
+  font-size: 18px;
+}
+
+.is-highlighted {
+  background-color: #007bff !important;
+  color: white;
 }

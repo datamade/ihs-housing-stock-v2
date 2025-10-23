@@ -41,16 +41,15 @@
     </nav>
 
     <main role="main" class="container-fluid">
-        <div id="area-info" class="ps-2 mb-3">
+        <div id="area-info" class="p-2 mb-3">
             <p class="mb-1" id="instructions">
-                <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area for details.
+                <i class="fa fa-search me-1" aria-hidden="true"></i> To view details for an area, search for one by name or select one directly from the map.
             </p>
+            <select id="search" class="mb-2" data-placeholder="Search an area by name..."></select>
+            <hr aria-hidden="true">
             <div id="info-display">
                 <div><span class="me-2">Hovered Area:</span><strong id="name"></strong></div>
             </div>
-        </div>
-        <div>
-            <select id="search" data-placeholder="Search an area by name..."></select>
         </div>
         <div id="map"></div>
     </main>
