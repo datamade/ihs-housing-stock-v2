@@ -4,7 +4,7 @@ body {
 
 #map {
   display: block;
-  height: 85vh;
+  height: 78vh;
 }
 
 h1 {
@@ -67,7 +67,7 @@ hr {
 /* Media queries */
 @media screen and (max-width: 767px) {
   #map {
-    height: 80vh;
+    height: 70vh;
   }
 }
 

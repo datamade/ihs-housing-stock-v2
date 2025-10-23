@@ -46,7 +46,6 @@ window.onresize = () => {
 
 // Map setup
 let hoveredFeatId = null
-let clickedFeatId = null
 let allAreas = []
 let popup = null
 map.on("load", () => {
@@ -132,7 +131,7 @@ map.on("load", () => {
       searchChoicesEl.setChoices(areaOptions)
     })
 
-  let mapSources = {
+  const mapSources = {
     source: "ihs_rollup_source",
     sourceLayer: "ihs_rollup_categorized-bu6v14",
   }
@@ -176,18 +175,10 @@ map.on("load", () => {
   // Show popup and highlight feature when clicking
   map.on("click", "ihs-fills", (e) => {
     const clickedFeat = e.features[0]
-    const props = clickedFeat.properties
-    const description = getDescription(props)
-    clickedFeatId = clickedFeat.id
-    setSelectedAttr(clickedFeatId, true)
     searchChoicesEl.removeActiveItems()
 
     // Add popup at cursor position when feature is clicked
-    popup = new mapbox.Popup().setLngLat(e.lngLat).setHTML(description)
-    popup.on("close", () => {
-      setSelectedAttr(clickedFeatId, false)
-    })
-    popup.addTo(map)
+    displayPopup(clickedFeat.id, e.lngLat, clickedFeat.properties)
   })
 
   searchInput.addEventListener("addItem", (e) => {
@@ -197,18 +188,10 @@ map.on("load", () => {
       if (area.id == inputVal) {
         const polygon = turfObj.polygon(area.geometry.coordinates)
         const center = turfObj.centroid(polygon).geometry.coordinates
-        const description = getDescription(area.properties)
-        if (popup) {
-          popup.remove()
-        }
+        if (popup) popup.remove()
 
         map.easeTo({ center: center, duration: 1500 })
-        setSelectedAttr(area.id, true)
-        popup = new mapbox.Popup().setLngLat(center).setHTML(description)
-        popup.on("close", () => {
-          setSelectedAttr(area.id, false)
-        })
-        popup.addTo(map)
+        displayPopup(area.id, center, area.properties)
         break
       }
     }
@@ -225,6 +208,16 @@ map.on("load", () => {
       { ...mapSources, id: featId },
       { selected: selectedVal }
     )
+  }
+
+  function displayPopup(featId, coords, props) {
+    const description = getDescription(props)
+    setSelectedAttr(featId, true)
+    popup = new mapbox.Popup().setLngLat(coords).setHTML(description)
+    popup.on("close", () => {
+      setSelectedAttr(featId, false)
+    })
+    popup.addTo(map)
   }
 
   function getDescription(props) {
