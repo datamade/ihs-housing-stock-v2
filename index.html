@@ -15,11 +15,14 @@
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="lib/mapbox/mapbox-gl.css" />
+    <link rel="stylesheet" href="lib/choices/choices.min.css" />
     <link rel="stylesheet" href="css/custom.css" />
 
     <!-- External scripts -->
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src='lib/mapbox/mapbox-gl.js'></script>
+    <script src="lib/choices/choices.min.js"></script>
+    <script src="lib/turf/turf.min.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,16 +38,19 @@
                 <img src="images/ihs-logo.png" id="logo" alt="Institue for Housing Studies at DePaul University">
             </a>
         </div>
-
     </nav>
+
     <main role="main" class="container-fluid">
-        <div id="area-info" class="ps-2">
+        <div id="area-info" class="ps-2 mb-3">
             <p class="mb-1" id="instructions">
                 <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area for details.
             </p>
             <div id="info-display">
-                <div><span class="me-2">Name:</span><strong id="name"></strong></div>
+                <div><span class="me-2">Hovered Area:</span><strong id="name"></strong></div>
             </div>
+        </div>
+        <div>
+            <select id="search" data-placeholder="Search an area by name..."></select>
         </div>
         <div id="map"></div>
     </main>
