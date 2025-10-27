@@ -26,13 +26,19 @@ h2 {
   width: auto;
 }
 
-#area-info {
+main > .row {
+  padding: 0 12px;
+}
+
+.area-info {
   font-family: sans-serif;
-  padding: 5px;
   border: 1px solid black;
   color: #222;
   background-color: #fff;
-  border-radius: 3px;
+}
+
+#name {
+  font-size: 20px;
 }
 
 .mapboxgl-popup-content {
@@ -68,6 +74,19 @@ hr {
 @media screen and (max-width: 767px) {
   #map {
     height: 70vh;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .area-info.left {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin-right: -1px;
+  }
+
+  .area-info.right {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
 }
 
