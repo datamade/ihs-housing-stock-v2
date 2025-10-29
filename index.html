@@ -45,7 +45,7 @@
 
     <main role="main" class="container-fluid">
         <div class="row mb-3">
-            <div class="area-info col-sm-6 p-2 left">
+            <div class="area-info col-sm-6 p-2 border-sm-end">
                 <p class="mb-1">
                     <i class="fa fa-search me-1" aria-hidden="true"></i>
                     Search for an area by name
@@ -54,11 +54,11 @@
                 </p>
                 <select id="search" class="mb-2" data-placeholder="Search an area by name..."></select>
             </div>
-            <div class="area-info d-none d-sm-block col-6 p-2 right">
+            <div class="area-info d-none d-sm-block col-6 p-2">
                 <p class="mb-1">
                     <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area directly from the map to view details.
                 </p>
-                <div id="info-display" class="my-2">
+                <div id="hovered-display" class="my-2">
                     <div>Hovered Area:</div>
                     <p><strong id="name"></strong></p>
                 </div>

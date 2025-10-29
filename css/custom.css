@@ -32,9 +32,8 @@ main > .row {
 
 .area-info {
   font-family: sans-serif;
-  border: 1px solid black;
   color: #222;
-  background-color: #fff;
+  background-color: #eef2f8;
 }
 
 #name {
@@ -78,15 +77,8 @@ hr {
 }
 
 @media screen and (min-width: 576px) {
-  .area-info.left {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    margin-right: -1px;
-  }
-
-  .area-info.right {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+  .border-sm-end {
+    border-right: 1px solid var(--bs-border-color);
   }
 }
 
