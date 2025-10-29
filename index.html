@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title>Housing Stock - Institute for Housing Studies - DePaul University</title>
+    <title>Composition of Cook County’s Housing Market - Institute for Housing Studies - DePaul University</title>
 
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="See the share of Cook County’s total housing units by community area and municipality that are in single family homes, condominiums, two-to-four unit buildings, buildings with five to 49 units, and buildings with 50 units or more." name='description'>
-    <meta content='Housing Stock - Institute for Housing Studies - DePaul University' name='author'>
+    <meta content='Composition of Cook County’s Housing Market - Institute for Housing Studies - DePaul University' name='author'>
 
     <!-- Styles -->
     <!-- Bootstrap css -->
@@ -15,11 +15,14 @@
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="lib/mapbox/mapbox-gl.css" />
+    <link rel="stylesheet" href="lib/choices/choices.min.css" />
     <link rel="stylesheet" href="css/custom.css" />
 
     <!-- External scripts -->
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src='lib/mapbox/mapbox-gl.js'></script>
+    <script src="lib/choices/choices.min.js"></script>
+    <script src="lib/turf/turf.min.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,21 +32,36 @@
   </head>
   <body>
     <nav class="navbar navbar-light">
-        <div class="container">
-            <h1>IHS Housing Stock Map</h1>
+        <div class="container-fluid">
+            <h1 class="me-3">
+                <div>Composition of Cook County’s </div>
+                <div>Housing Market</div>
+            </h1>
             <a class="navbar-brand" href="http://www.housingstudies.org/">
                 <img src="images/ihs-logo.png" id="logo" alt="Institue for Housing Studies at DePaul University">
             </a>
         </div>
-
     </nav>
+
     <main role="main" class="container-fluid">
-        <div id="area-info" class="ps-2">
-            <p class="mb-1" id="instructions">
-                <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area for details.
-            </p>
-            <div id="info-display">
-                <div><span class="me-2">Name:</span><strong id="name"></strong></div>
+        <div class="row mb-3">
+            <div class="area-info col-sm-6 p-2 border-sm-end">
+                <p class="mb-1">
+                    <i class="fa fa-search me-1" aria-hidden="true"></i>
+                    Search for an area by name
+                    <span class="d-sm-none">or select one directly from the map</span>
+                    to view details.
+                </p>
+                <select id="search" class="mb-2" data-placeholder="Search an area by name..."></select>
+            </div>
+            <div class="area-info d-none d-sm-block col-6 p-2">
+                <p class="mb-1">
+                    <i class="fa fa-hand-pointer-o me-1" aria-hidden="true"></i> Select an area directly from the map to view details.
+                </p>
+                <div id="hovered-display" class="my-2">
+                    <div>Hovered Area:</div>
+                    <p><strong id="name"></strong></p>
+                </div>
             </div>
         </div>
         <div id="map"></div>

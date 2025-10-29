@@ -65,10 +65,12 @@ with (
                 if "ihs_comm_area" in data_to_import.name:
                     if formatted_name.lower() == row["CCA"].lower().replace(" ", ""):
                         found_f = f
+                        category = "City of Chicago"
                         break
                 else:  # municipalities
                     if formatted_name.lower() == row["Place"].lower().replace(" ", ""):
                         found_f = f
+                        category = "Suburban Cook County"
                         break
 
             if not found_f:
@@ -79,6 +81,7 @@ with (
                 "type": "Feature",
                 "properties": {
                     "name": name,
+                    "category": category,
                 },
                 "geometry": found_f["geometry"],
             }

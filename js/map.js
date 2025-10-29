@@ -1,5 +1,11 @@
 const mapbox = mapboxgl // eslint-disable-line
+const turfObj = turf // eslint-disable-line
+const choicesObj = Choices // eslint-disable-line
 const nameDisplay = document.getElementById("name")
+const searchInput = document.getElementById("search")
+const searchChoicesEl = new choicesObj(searchInput, {
+  searchResultLimit: -1,
+})
 
 mapbox.accessToken =
   "pk.eyJ1IjoiaG91c2luZ3N0dWRpZXMiLCJhIjoiY21jbmZ4MWFjMDZ1cjJrcHBhNHY2aTkwbiJ9.t-q8Z7FV6gdGhztkwKTeAA"
@@ -7,20 +13,46 @@ const map = new mapbox.Map({
   container: "map",
   style: "mapbox://styles/housingstudies/cmcb0c6ql002001rz02zqewvm",
   center: [-87.66231, 41.85754], // [lng, lat]
-  zoom: 12,
+  zoom: 8,
+  attributionControl: false,
 })
 
 // Zoom and rotation controls
 map.addControl(new mapbox.NavigationControl(), "top-left")
 map.scrollZoom.disable()
 
+// Attribution
+const attributionStr = "IHS Calculations of Data from the Cook County Assessor"
+let currAttribution = new mapbox.AttributionControl({
+  customAttribution: attributionStr,
+  compact: window.innerWidth < 768,
+})
+map.addControl(currAttribution)
+
+window.onresize = () => {
+  // Make attribution compact on smaller window sizes
+  const isCompactWindow = window.innerWidth < 768
+
+  // Only change compact setting when needed
+  if (isCompactWindow != currAttribution.options.compact) {
+    map.removeControl(currAttribution)
+    currAttribution = new mapbox.AttributionControl({
+      customAttribution: attributionStr,
+      compact: isCompactWindow,
+    })
+    map.addControl(currAttribution)
+  }
+}
+
+// Map setup
 let hoveredFeatId = null
-let clickedFeatId = null
+let allAreas = []
+let popup = null
 map.on("load", () => {
   // Set a specific ID field so all feature ids are unique beyond their tile
   map.addSource("ihs_rollup_source", {
     type: "vector",
-    url: "mapbox://housingstudies.98grrlnk",
+    url: "mapbox://housingstudies.bjoslluh",
     promoteId: "name",
   })
 
@@ -29,7 +61,7 @@ map.on("load", () => {
     id: "ihs-fills",
     type: "fill",
     source: "ihs_rollup_source",
-    "source-layer": "ihs_rollup-2jzfoj",
+    "source-layer": "ihs_rollup_categorized-bu6v14",
     paint: {
       "fill-color": "#749C75",
       "fill-opacity": [
@@ -45,25 +77,63 @@ map.on("load", () => {
     },
   })
 
-  map.addLayer({
-    id: "ihs-borders",
-    type: "line",
-    source: "ihs_rollup_source",
-    "source-layer": "ihs_rollup-2jzfoj",
-    paint: {
-      "line-color": "#000000",
-      "line-width": [
-        "case",
-        ["boolean", ["feature-state", "selected"], false],
-        5,
-        1,
-      ],
-    },
-  })
+  map
+    .addLayer({
+      id: "ihs-borders",
+      type: "line",
+      source: "ihs_rollup_source",
+      "source-layer": "ihs_rollup_categorized-bu6v14",
+      paint: {
+        "line-color": "#000000",
+        "line-width": [
+          "case",
+          ["boolean", ["feature-state", "selected"], false],
+          5,
+          1,
+        ],
+      },
+    })
+    .once("idle", () => {
+      // Once resources are loaded, set options for the searchable select input
+      const allAreasRaw = map.querySourceFeatures("ihs_rollup_source", {
+        sourceLayer: "ihs_rollup_categorized-bu6v14",
+      })
+      let areaOptions = [
+        { label: "City of Chicago", choices: [] },
+        { label: "Suburban Cook County", choices: [] },
+      ]
 
-  let mapSources = {
+      // Remove duplicates from raw response
+      allAreasRaw.forEach((currArea) => {
+        for (const distinctArea of allAreas) {
+          if (distinctArea.id == currArea.id) {
+            return
+          }
+        }
+        allAreas.push(currArea)
+      })
+
+      // Populate area options
+      allAreas.forEach((area) => {
+        const currCategory = area.properties.category
+        const groupIndex = currCategory.includes("City") ? 0 : 1
+        areaOptions[groupIndex].choices.push({
+          value: area.id,
+          label: area.id,
+        })
+      })
+
+      // We start at a further zoom order to get info on all areas,
+      // so we need to zoom back to our intended default once those are gotten
+      map.easeTo({ zoom: 12, duration: 1500 })
+
+      // Set searchable dropdown options
+      searchChoicesEl.setChoices(areaOptions)
+    })
+
+  const mapSources = {
     source: "ihs_rollup_source",
-    sourceLayer: "ihs_rollup-2jzfoj",
+    sourceLayer: "ihs_rollup_categorized-bu6v14",
   }
 
   // Update the feature state for the feature under the mouse, when hovering.
@@ -105,14 +175,65 @@ map.on("load", () => {
   // Show popup and highlight feature when clicking
   map.on("click", "ihs-fills", (e) => {
     const clickedFeat = e.features[0]
-    const props = clickedFeat.properties
-    const description = `
+    searchChoicesEl.removeActiveItems()
+
+    // Add popup at cursor position when feature is clicked
+    displayPopup(clickedFeat.id, e.lngLat, clickedFeat.properties)
+  })
+
+  searchInput.addEventListener("addItem", (e) => {
+    // Pan to area and select it
+    let inputVal = e.detail.value
+    for (const area of allAreas) {
+      if (area.id == inputVal) {
+        let shape = null
+        const coords = area.geometry.coordinates
+        if (area.geometry.type == "Polygon") {
+          shape = turfObj.polygon(coords)
+        } else {
+          shape = turfObj.multiPolygon(coords)
+        }
+        const center = turfObj.centroid(shape).geometry.coordinates
+        if (popup) popup.remove()
+
+        map.easeTo({ center: center, duration: 1500 })
+        displayPopup(area.id, center, area.properties)
+        break
+      }
+    }
+  })
+
+  /** Helper Functions */
+
+  function formatUnits(value) {
+    return value ? parseInt(value).toLocaleString("en") : "0"
+  }
+
+  function setSelectedAttr(featId, selectedVal) {
+    map.setFeatureState(
+      { ...mapSources, id: featId },
+      { selected: selectedVal }
+    )
+  }
+
+  function displayPopup(featId, coords, props) {
+    const description = getDescription(props)
+    setSelectedAttr(featId, true)
+    popup = new mapbox.Popup().setLngLat(coords).setHTML(description)
+    popup.on("close", () => {
+      setSelectedAttr(featId, false)
+    })
+    popup.addTo(map)
+  }
+
+  function getDescription(props) {
+    return `
       <div class="m-2">
-        <p class="h4">${props.name}</p>
-        <ul class="list-unstyled mb-0">
-          <li>Total Units: ${parseInt(props["Total"]).toLocaleString("en")}</li>
-          <li>Percent Multifamily: ${props["UmultiFam"]}</li>
-        </ul>
+        <p class="h4 mb-0">${props.name}</p>
+        <p class="text-secondary mb-2">${props.category}</p>
+        <p class="mb-0">
+          Total Units: ${parseInt(props["Total"]).toLocaleString("en")}
+        </p>
         <hr aria-hidden="true">
         <table class="table table-striped">
           <thead>
@@ -152,27 +273,5 @@ map.on("load", () => {
         </table>
       </div>
     `
-
-    if (clickedFeatId !== null) {
-      map.setFeatureState(
-        { ...mapSources, id: clickedFeatId },
-        { selected: false }
-      )
-    }
-
-    clickedFeatId = clickedFeat.id
-    map.setFeatureState(
-      { ...mapSources, id: clickedFeatId },
-      { selected: true }
-    )
-
-    // Add popup at cursor position when feature is clicked
-    new mapbox.Popup().setLngLat(e.lngLat).setHTML(description).addTo(map)
-  })
+  }
 })
-
-/** Helper Functions */
-
-function formatUnits(value) {
-  return value ? parseInt(value).toLocaleString("en") : "0"
-}
