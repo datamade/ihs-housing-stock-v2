@@ -52,7 +52,7 @@ map.on("load", () => {
   // Set a specific ID field so all feature ids are unique beyond their tile
   map.addSource("ihs_rollup_source", {
     type: "vector",
-    url: "mapbox://housingstudies.bjoslluh",
+    url: "mapbox://housingstudies.3ibkk10c",
     promoteId: "name",
   })
 
@@ -61,7 +61,7 @@ map.on("load", () => {
     id: "ihs-fills",
     type: "fill",
     source: "ihs_rollup_source",
-    "source-layer": "ihs_rollup_categorized-bu6v14",
+    "source-layer": "ihs_rollup_adjusted-9njcx3",
     paint: {
       "fill-color": "#749C75",
       "fill-opacity": [
@@ -82,7 +82,7 @@ map.on("load", () => {
       id: "ihs-borders",
       type: "line",
       source: "ihs_rollup_source",
-      "source-layer": "ihs_rollup_categorized-bu6v14",
+      "source-layer": "ihs_rollup_adjusted-9njcx3",
       paint: {
         "line-color": "#000000",
         "line-width": [
@@ -96,7 +96,7 @@ map.on("load", () => {
     .once("idle", () => {
       // Once resources are loaded, set options for the searchable select input
       const allAreasRaw = map.querySourceFeatures("ihs_rollup_source", {
-        sourceLayer: "ihs_rollup_categorized-bu6v14",
+        sourceLayer: "ihs_rollup_adjusted-9njcx3",
       })
       let areaOptions = [
         { label: "City of Chicago", choices: [] },
@@ -133,7 +133,7 @@ map.on("load", () => {
 
   const mapSources = {
     source: "ihs_rollup_source",
-    sourceLayer: "ihs_rollup_categorized-bu6v14",
+    sourceLayer: "ihs_rollup_adjusted-9njcx3",
   }
 
   // Update the feature state for the feature under the mouse, when hovering.

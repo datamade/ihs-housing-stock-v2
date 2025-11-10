@@ -11,6 +11,8 @@ From top to bottom, the following `with` statement asks for:
 - a destination path for the resulting rollup geojson file
 
 This is intended to be run from the root directory.
+If we get new community/municipality level data from ihs, export them as csvs
+and rename the later duplicate column names with a "_p" at the end
 """
 with (
     open("data/communities_and_municipalities.geojson") as gj_infile,
