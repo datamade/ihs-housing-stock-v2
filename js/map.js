@@ -19,7 +19,6 @@ const map = new mapbox.Map({
 
 // Zoom and rotation controls
 map.addControl(new mapbox.NavigationControl(), "top-left")
-map.scrollZoom.disable()
 
 // Attribution
 const attributionStr = "IHS Calculations of Data from the Cook County Assessor"
@@ -64,16 +63,7 @@ map.on("load", () => {
     "source-layer": "ihs_rollup_adjusted-9njcx3",
     paint: {
       "fill-color": "#749C75",
-      "fill-opacity": [
-        "case",
-        [
-          "any",
-          ["boolean", ["feature-state", "hover"], false],
-          ["boolean", ["feature-state", "selected"], false],
-        ],
-        0.3,
-        0,
-      ],
+      "fill-opacity": 0,
     },
   })
 
@@ -84,11 +74,24 @@ map.on("load", () => {
       source: "ihs_rollup_source",
       "source-layer": "ihs_rollup_adjusted-9njcx3",
       paint: {
-        "line-color": "#000000",
+        "line-color": [
+          "case",
+          [
+            "any",
+            ["boolean", ["feature-state", "hover"], false],
+            ["boolean", ["feature-state", "selected"], false],
+          ],
+          "#C1C176",
+          "#000000",
+        ],
         "line-width": [
           "case",
-          ["boolean", ["feature-state", "selected"], false],
-          5,
+          [
+            "any",
+            ["boolean", ["feature-state", "hover"], false],
+            ["boolean", ["feature-state", "selected"], false],
+          ],
+          4,
           1,
         ],
       },
